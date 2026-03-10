@@ -1,10 +1,10 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider, useAuth } from "./assets/contexts/AuthContext";
 
 // Telas (Vamos criá-las no próximo passo)
-import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
-//import Produtos from './pages/Produtos';
+import Login from "./assets/Pages/login";
+import Dashboard from "./assets/Pages/Dashboard";
+import Produtos from "./assets/Pages/Produtos";
 
 // Componente para proteger as rotas internas
 const RotaProtegida = ({ children }) => {
@@ -20,21 +20,37 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
-      
+
       {/* Rotas Protegidas */}
-      <Route path="/" element={
-        <RotaProtegida>
-          <Dashboard />
-        </RotaProtegida>
-      } />
-      
-      <Route path="/produtos" element={
-        <RotaProtegida>
-          {/* Produtos Component */}
-        </RotaProtegida>
-      } />
+      <Route
+        path="/"
+        element={
+          <RotaProtegida>
+            <Dashboard />
+          </RotaProtegida>
+        }
+      />
+
+      <Route
+        path="/produtos"
+        element={
+          <RotaProtegida>
+            <Produtos />
+          </RotaProtegida>
+        }
+      />
     </Routes>
   );
 }
 
-export default AppRoutes;
+function App() {
+  return (
+    <AuthProvider>
+      <BrowserRouter>
+        <AppRoutes />
+      </BrowserRouter>
+    </AuthProvider>
+  );
+}
+
+export default App;
