@@ -1,56 +1,35 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { AuthProvider, useAuth } from "./assets/contexts/AuthContext";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-// Telas (Vamos criá-las no próximo passo)
-import Login from "./assets/Pages/login";
-import Dashboard from "./assets/Pages/Dashboard";
-import Produtos from "./assets/Pages/Produtos";
+// Importação do Contexto de Autenticação
+import { AuthProvider } from './assets/contexts/AuthContext';
 
-// Componente para proteger as rotas internas
-const RotaProtegida = ({ children }) => {
-  const { user } = useAuth();
-  // Se não tem usuário logado, manda pro login
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
-  return children;
-};
+// Importação das Páginas
+import Login from './assets/Pages/Login'; // Ajuste se o nome do seu arquivo de login for diferente
+import Dashboard from './assets/Pages/Dashboard'; // Essa é a tela de "Início" (Ajuste o nome se necessário)
+import Produtos from './assets/Pages/Produtos';
 
-function AppRoutes() {
-  return (
-    <Routes>
-      <Route path="/login" element={<Login />} />
+// NOVA IMPORTAÇÃO: TELA DE CLIENTES
+import Clientes from './assets/Pages/Clientes';
+import Vendas from './assets/Pages/Vendas';
+import Relatorios from './assets/Pages/relatorios';
+// Se vocês usam um componente de "Rota Privada" para bloquear quem não está logado, 
+// ele seria importado aqui. (Ex: import PrivateRoute from './components/PrivateRoute')
 
-      {/* Rotas Protegidas */}
-      <Route
-        path="/"
-        element={
-          <RotaProtegida>
-            <Dashboard />
-          </RotaProtegida>
-        }
-      />
-
-      <Route
-        path="/produtos"
-        element={
-          <RotaProtegida>
-            <Produtos />
-          </RotaProtegida>
-        }
-      />
-    </Routes>
-  );
-}
-
-function App() {
+export default function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <AppRoutes />
-      </BrowserRouter>
+      <Router>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Dashboard />} /> 
+          <Route path="/produtos" element={<Produtos />} />
+          <Route path="/clientes" element={<Clientes />} />
+          
+          {/* === ROTA DE VENDAS === */}
+          <Route path="/vendas" element={<Vendas />} />
+          <Route path="/relatorios" element={<Relatorios />} />
+        </Routes>
+      </Router>
     </AuthProvider>
   );
 }
-
-export default App;
